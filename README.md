@@ -1,33 +1,25 @@
 # 簡易 Excel 填寫工具（自用版）
 
-## 安裝說明（Windows）
+## 安裝說明（Windows, 只需要做一次）
 
-### 1. 安裝 Python
-請至以下網址下載並安裝 Python：https://www.python.org/downloads/
+### 1. 下載原始碼
+到 https://github.com/Benjamin-Yan/simple-excel-filler/releases/tag/v1.0.0 下載 `simple-excel-filler.zip` 並解壓縮到任意資料夾中。
+
+### 2. 安裝 Python
+如果電腦沒有下載 python，請至以下網址下載並安裝 Python：https://www.python.org/downloads/
 安裝時請務必勾選 **「Add Python to PATH」** 的選項，這樣系統才找得到 Python。
 
-### 2. 下載這個資料夾
-把壓縮檔先解壓縮。
-然後打開「命令提示字元」：按下 `Win + R` → 輸入 `cmd` → 按 Enter。
+參考影片連結: https://youtu.be/czeEyrCm-bQ (看下載python就好)
 
-### 3. 移動到資料夾
-輸入這行指令，移動到剛剛解壓縮的資料夾（以下是範例路徑，請依照實際位置調整）：
-```cmd
-cd %USERPROFILE%\Downloads\simple-excel-filler
-```
-
-### 4. 安裝所需的工具（只需要做一次）
-輸入這行指令來安裝小工具需要的套件：
-```cmd
-pip install -r requirements.txt
-```
+### 3. 安裝所需的工具
+點兩下 `create_venv.bat`，等待它創建虛擬環境並安裝需要的 python 套件。
 
 ---
 
 ## 使用說明
 
 ### 執行小工具
-按兩下 `start_app.bat` 啟動程式後，會直接打開你的瀏覽器（Chrome），並連結到這個網址 `http://127.0.0.1:5000/` 就可以看到主畫面啦！
+按兩下 `start_app.bat`，等待網頁跳出即可。(預設使用 Chrome 開啟，也可手動連結到這個網址 `http://127.0.0.1:5000/`)
 
 ### 功能介紹
 - 預設: 自動將 `姓名、學號、電話、身分證` 等欄位填入表單中。
@@ -38,6 +30,8 @@ pip install -r requirements.txt
    - 如果是預設功能，則到此步驟即可完成。
 2. 選擇要取出的欄位，以及要填寫幾筆資料 (例如填到第30位工讀生)
 3. 選擇對應的目標欄位，請注意格式。
+
+---
 
 ## 注意事項
 - 請把要讀資料的資料表放在最前面(預設是讀第一張工作表)
@@ -113,4 +107,6 @@ simple-excel-filler/
 ├── start_app.bat              # Batch file to run the app
 └── README.md
 ```
+
+開發 `V1.0.0` 共花了 `24hr 46min`
 
