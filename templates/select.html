@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進階功能</title>
+    <script src="{{ url_for('static', filename='js/select.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>自己選擇要填哪些欄位</h1>
+    <form onsubmit="handleSubmit(event)">
+      <label for="input_file">Select Input File:</label>
+      <input type="file" name="input_file" id="input_file" accept=".xlsx, .xls" required>
+
+      <label for="output_file">Select Output File:</label>
+      <input type="file" name="output_file" id="output_file" accept=".xlsx, .xls" required>
+
+      <input type="hidden" name="source" value="select">
+      <input type="submit" value="選擇欄位">
+    </form>
+
+    <hr/>
+    <p id="result"></p>
+    <h2>請在此選擇要填的欄位</h2>
+    <p>可複選，但排最前面的會成為工作表的名稱，如: 工讀生姓名。請至少選一個。</p>
+    <form method="POST" id="columnList" action="/select/process"></form>
+
+    <hr/>
+    <a href="/">回首頁</a>
+</body>
+</html>

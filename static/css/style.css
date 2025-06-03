@@ -1,0 +1,71 @@
+:root {
+    --primary-color: #FFE5D4;
+    --button-color: #68A691;
+    --title-color: #694F5D;
+  }  
+
+* {
+    margin: 0 10px 10px 10px;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--primary-color);
+    font-family: 'Ubuntu', sans-serif;
+}
+
+h1 {
+    color: var(--title-color);
+    text-align: center;
+    margin-top: 10px;
+}
+
+h2 {
+    color: var(--title-color);
+}
+
+a {
+    color: #c78d8d;
+    text-decoration: none;
+}
+a:hover {
+    background: var(--button-color);
+    color: #EFC7C2;
+}
+
+input {
+    /* width: 50%; */
+    color: #263238;
+    font-weight: 700;
+    /* font-size: 14px; */
+    /* letter-spacing: 1px; */
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 20px;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    text-align: center;
+}
+input:focus {
+    border: 2px solid rgba(0, 0, 0, 0.18) !important;
+}
+
+input[type="submit"] {
+    /* margin: 10px; */
+    border-radius: 4px;
+    /* width: 25%;
+    height: 40px;
+    font-size: larger; */
+    color: black;
+    background: transparent;
+    border: 2px solid var(--button-color);
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: var(--button-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+}
+

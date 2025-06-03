@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>預設功能</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <h1>將基本資料填入表單</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+      <label for="input_file">Select Input File:</label>
+      <input type="file" name="input_file" id="input_file" accept=".xlsx, .xls" required>
+
+      <label for="output_file">Select Output File:</label>
+      <input type="file" name="output_file" id="output_file" accept=".xlsx, .xls" required>
+
+      <input type="hidden" name="source" value="default">
+      <input type="submit" value="確認執行">
+    </form>
+
+    <br/>
+    <a href="/select">前往進階功能頁面</a>
+  </body>
+</html>
+
