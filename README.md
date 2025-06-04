@@ -3,7 +3,7 @@
 ## 安裝說明（Windows, 只需要做一次）
 
 ### 1. 下載原始碼
-到 https://github.com/Benjamin-Yan/simple-excel-filler/releases/tag/v1.0.0 下載 `simple-excel-filler.zip` 並解壓縮到任意資料夾中。
+到 https://github.com/Benjamin-Yan/simple-excel-filler/releases/tag/V1.0.1 下載 `simple-excel-filler.zip` 並解壓縮到任意資料夾中。
 
 ### 2. 安裝 Python
 如果電腦沒有下載 python，請至以下網址下載並安裝 Python：https://www.python.org/downloads/
@@ -29,7 +29,8 @@
 1. 選擇 Excel 檔案 (包含要讀取的檔案以及輸出用的模板檔案)
    - 如果是預設功能，則到此步驟即可完成。
 2. 選擇要取出的欄位，以及要填寫幾筆資料 (例如填到第30位工讀生)
-3. 選擇對應的目標欄位，請注意格式。
+3. 選擇對應的目標欄位，請注意格式，如: `3F`。
+4. 結束填寫時，把命令提示符(黑底的視窗)關掉即可。
 
 ---
 

@@ -2,8 +2,5 @@
 
 python -m venv myenv
 
-myenv\Scripts\activate
-
-pip install -r requirements.txt
-
-deactivate
+REM starts a new cmd session to activate and run everything
+call cmd /c "myenv\Scripts\activate.bat && pip install -r requirements.txt && deactivate"
