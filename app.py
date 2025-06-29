@@ -1,4 +1,4 @@
-import os
+import os, signal, threading, time
 import atexit
 from flask import Flask, render_template, render_template_string, request, session
 import pandas as pd
@@ -7,6 +7,7 @@ from shared import created_temp_files
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24) # for session management
+apppid = os.getpid()
 
 @app.route('/')
 def index():
@@ -116,6 +117,15 @@ def cleanup_temp_files():
                 print(f"Deleted temp file: {file_path}")
         except Exception as e:
             print(f"Error deleting temp file {file_path}: {e}")
+
+@app.route('/endapp')
+def kill_backend():
+    def delayed_shutdown():
+        cleanup_temp_files()
+        time.sleep(1)
+        os.kill(apppid, signal.SIGTERM)
+    threading.Thread(target=delayed_shutdown).start()
+    return "任務已完成，可以放心關閉此頁面。"
 
 if __name__ == '__main__':
     app.run(debug=False)
