@@ -104,7 +104,7 @@ def fill_excel_select(selected_cols, selected_rows, location_data):
 
     DATA_DIR = os.path.join(os.getcwd(), "data")
     os.makedirs(DATA_DIR, exist_ok=True)
-    file_path = os.path.join(DATA_DIR, fileO_name.filename)
+    file_path = os.path.join(DATA_DIR, fileO_name)
 
     try:
         df = pd.read_excel(temp_fileI_path, sheet_name=0, engine='openpyxl', dtype=str)
