@@ -1,4 +1,6 @@
-import os, ipaddress
+import os, logging
+from ipaddress import ip_address, ip_network
+from werkzeug.middleware.proxy_fix import ProxyFix
 import atexit
 import shutil
 from flask import Flask, render_template, render_template_string, request, session, abort, send_from_directory
@@ -8,21 +10,25 @@ from shared import created_temp_files
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24) # for session management
+app.logger.setLevel(logging.INFO)
 
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 allowed_ips = os.getenv("ALLOWED_IPS", "127.0.0.1").split(",")
 
 def check_ip():
     client_ip = request.remote_addr
-    ip_obj = ipaddress.ip_address(client_ip)
+    ip_obj = ip_address(client_ip)
 
     for net in allowed_ips:
         net = net.strip()
-        if ip_obj in ipaddress.ip_network(net, strict=False):
+        if ip_obj in ip_network(net, strict=False):
             return  # 允許
+    app.logger.warning("Blocked IP: %s", client_ip)
     abort(403, description="IP not allowed")
 
 @app.route('/')
 def index():
+    app.logger.info('Visitor IP: %s', request.remote_addr)
     return render_template('index.html')
 
 @app.route('/select')
