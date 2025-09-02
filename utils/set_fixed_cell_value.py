@@ -21,7 +21,10 @@ def fill_excel_default(infile, outfile):
         # 將資料轉換成二維列表
         data = selected_columns_data.to_numpy().tolist()
 
-        file_path = os.path.join(os.getcwd(), outfile.filename)
+        DATA_DIR = os.path.join(os.getcwd(), "data")
+        os.makedirs(DATA_DIR, exist_ok=True)
+        file_path = os.path.join(DATA_DIR, outfile.filename)
+
         # Use BytesIO to handle the uploaded file as a file-like object
         wb = load_workbook(io.BytesIO(outfile.read()))  # file.read() returns the file as bytes
 

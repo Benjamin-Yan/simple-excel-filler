@@ -102,6 +102,10 @@ def fill_excel_select(selected_cols, selected_rows, location_data):
     fileO_name = session['fileO_name']
     session.pop('fileO_name', None)
 
+    DATA_DIR = os.path.join(os.getcwd(), "data")
+    os.makedirs(DATA_DIR, exist_ok=True)
+    file_path = os.path.join(DATA_DIR, fileO_name.filename)
+
     try:
         df = pd.read_excel(temp_fileI_path, sheet_name=0, engine='openpyxl', dtype=str)
         rowcnt = df.shape[0]
@@ -130,10 +134,11 @@ def fill_excel_select(selected_cols, selected_rows, location_data):
 
                 new_sheet.cell(row=int(row_loc_number), column=int(column_loc_number), value=i[j])
 
-        wb.save(fileO_name)
+        wb.save(file_path)
 
         return {
             "rows": rowcnt,
+            "fileO_name": fileO_name,
             "status": "success"
         }
     except Exception as e:

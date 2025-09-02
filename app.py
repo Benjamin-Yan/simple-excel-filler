@@ -1,13 +1,13 @@
-import os, signal, threading, time, ipaddress
+import os, ipaddress
 import atexit
-from flask import Flask, render_template, render_template_string, request, session, abort
+import shutil
+from flask import Flask, render_template, render_template_string, request, session, abort, send_from_directory
 import pandas as pd
 from utils import fill_excel_default, get_column_name, fill_excel_select
 from shared import created_temp_files
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24) # for session management
-apppid = os.getpid()
 
 allowed_ips = os.getenv("ALLOWED_IPS", "127.0.0.1").split(",")
 
@@ -55,13 +55,12 @@ def upload_files():
         return get_column_name(input_file, output_file)
 
     if result["status"] == "success":
-        # Processed file: {input_file.filename}<br>
-        # Rows: {result['rows']}, Columns: {result['columns']}<br>
         return render_template_string("""
             <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
             The task was completed successfully.<br>
+            <a href="/download/{{ fileO_name }}" download>下載完成的檔案</a>
             <a href="/">回首頁</a>
-        """)
+        """, fileO_name=output_file.filename)
     else:
         return f"Error: {result['message']}<br><a href='/'>Try again</a>"
 
@@ -117,10 +116,16 @@ def process_location():
         return render_template_string("""
             <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
             The task was completed successfully.<br>
+            <a href="/download/{{ fileO_name }}" download>下載完成的檔案</a>
             <a href="/">回首頁</a>
-        """)
+        """, fileO_name=result["fileO_name"])
     else:
         return f"Error: {result['message']}<br><a href='/select'>Try again</a>"
+
+@app.route("/download/<filename>")
+def download_excel(filename):
+    DATA_DIR = os.path.join(os.getcwd(), "data")
+    return send_from_directory(DATA_DIR, filename, as_attachment=True)
 
 @atexit.register
 def cleanup_temp_files():
@@ -135,6 +140,9 @@ def cleanup_temp_files():
 @app.route('/endapp')
 def end_session():
     cleanup_temp_files()
+    DATA_DIR = os.path.join(os.getcwd(), "data")
+    shutil.rmtree(DATA_DIR, ignore_errors=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
     return "任務已完成，可以放心關閉此頁面。"
 
 if __name__ == '__main__':
