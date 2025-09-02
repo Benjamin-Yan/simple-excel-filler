@@ -55,12 +55,7 @@ def upload_files():
         return get_column_name(input_file, output_file)
 
     if result["status"] == "success":
-        return render_template_string("""
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-            The task was completed successfully.<br>
-            <a href="/download/{{ fileO_name }}" download>下載完成的檔案</a>
-            <a href="/">回首頁</a>
-        """, fileO_name=output_file.filename)
+        return render_template("success.html", fileO_name=output_file.filename)
     else:
         return f"Error: {result['message']}<br><a href='/'>Try again</a>"
 
@@ -113,12 +108,7 @@ def process_location():
     result = {}
     result = fill_excel_select(selected_cols, selected_rows, location_data)
     if result["status"] == "success":
-        return render_template_string("""
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-            The task was completed successfully.<br>
-            <a href="/download/{{ fileO_name }}" download>下載完成的檔案</a>
-            <a href="/">回首頁</a>
-        """, fileO_name=result["fileO_name"])
+        return render_template("success.html", fileO_name=result["fileO_name"])
     else:
         return f"Error: {result['message']}<br><a href='/select'>Try again</a>"
 

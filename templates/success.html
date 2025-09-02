@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>任務成功</title>
+</head>
+<body>
+    <p>The task was completed successfully.</p>
+    <a href="{{ url_for('download', filename=fileO_name) }}" download>下載完成的檔案</a><br>
+    <a href="/">回首頁</a>
+</body>
+</html>
