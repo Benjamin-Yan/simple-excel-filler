@@ -1,6 +1,6 @@
-import os, signal, threading, time
+import os, signal, threading, time, ipaddress
 import atexit
-from flask import Flask, render_template, render_template_string, request, session
+from flask import Flask, render_template, render_template_string, request, session, abort
 import pandas as pd
 from utils import fill_excel_default, get_column_name, fill_excel_select
 from shared import created_temp_files
@@ -8,6 +8,18 @@ from shared import created_temp_files
 app = Flask(__name__)
 app.secret_key = os.urandom(24) # for session management
 apppid = os.getpid()
+
+allowed_ips = os.getenv("ALLOWED_IPS", "127.0.0.1").split(",")
+
+def check_ip():
+    client_ip = request.remote_addr
+    ip_obj = ipaddress.ip_address(client_ip)
+
+    for net in allowed_ips:
+        net = net.strip()
+        if ip_obj in ipaddress.ip_network(net, strict=False):
+            return  # 允許
+    abort(403, description="IP not allowed")
 
 @app.route('/')
 def index():
@@ -24,6 +36,8 @@ def upload_files():
     若為預設模式，則回傳狀態資訊；
     若為進階模式，則回傳 get_column_name() 函式的結果。
     """
+    check_ip()  # 拒絕非法 IP 消耗資源
+
     # 確認有沒有傳成功
     if 'input_file' not in request.files or 'output_file' not in request.files:
         return 'No file part'
