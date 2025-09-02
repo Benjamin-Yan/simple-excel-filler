@@ -133,12 +133,8 @@ def cleanup_temp_files():
             print(f"Error deleting temp file {file_path}: {e}")
 
 @app.route('/endapp')
-def kill_backend():
-    def delayed_shutdown():
-        cleanup_temp_files()
-        time.sleep(1)
-        os.kill(apppid, signal.SIGTERM)
-    threading.Thread(target=delayed_shutdown).start()
+def end_session():
+    cleanup_temp_files()
     return "任務已完成，可以放心關閉此頁面。"
 
 if __name__ == '__main__':
