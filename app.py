@@ -11,12 +11,13 @@ from shared import created_temp_files
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=3) # render and cloudflare
 app.secret_key = os.urandom(24) # for session management
-app.logger.setLevel(logging.INFO)
 
 allowed_ips = os.getenv("ALLOWED_IPS", "127.0.0.1").split(",")
+log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
+app.logger.setLevel( getattr(logging, log_level, logging.WARNING) )
 
 def check_ip():
-    app.logger.info("X-Forwarded-For: %s (2)", request.headers.get("X-Forwarded-For"))
+    app.logger.debug("X-Forwarded-For: %s (2)", request.headers.get("X-Forwarded-For"))
 
     client_ip = request.remote_addr
     ip_obj = ip_address(client_ip)
@@ -31,7 +32,7 @@ def check_ip():
 @app.route('/')
 def index():
     app.logger.info('Visitor IP: %s', request.remote_addr)
-    app.logger.info("X-Forwarded-For: %s (1)", request.headers.get("X-Forwarded-For"))
+    app.logger.debug("X-Forwarded-For: %s (1)", request.headers.get("X-Forwarded-For"))
 
     return render_template('index.html')
 
@@ -133,9 +134,9 @@ def cleanup_temp_files():
         try:
             if os.path.exists(file_path):
                 os.unlink(file_path)
-                print(f"Deleted temp file: {file_path}")
+                app.logger.info('Deleted temp file: %s', file_path)
         except Exception as e:
-            print(f"Error deleting temp file {file_path}: {e}")
+            app.logger.error('Error deleting temp file %s: %s', file_path, e)
 
 @app.route('/endapp')
 def end_session():
