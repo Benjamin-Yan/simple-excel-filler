@@ -9,13 +9,15 @@ from utils import fill_excel_default, get_column_name, fill_excel_select
 from shared import created_temp_files
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2) # render and cloudflare
 app.secret_key = os.urandom(24) # for session management
 app.logger.setLevel(logging.INFO)
 
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2) # render and cloudflare
 allowed_ips = os.getenv("ALLOWED_IPS", "127.0.0.1").split(",")
 
 def check_ip():
+    app.logger.info("X-Forwarded-For: %s (2)", request.headers.get("X-Forwarded-For"))
+
     client_ip = request.remote_addr
     ip_obj = ip_address(client_ip)
 
@@ -29,6 +31,8 @@ def check_ip():
 @app.route('/')
 def index():
     app.logger.info('Visitor IP: %s', request.remote_addr)
+    app.logger.info("X-Forwarded-For: %s (1)", request.headers.get("X-Forwarded-For"))
+
     return render_template('index.html')
 
 @app.route('/select')
