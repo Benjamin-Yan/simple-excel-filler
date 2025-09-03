@@ -9,7 +9,7 @@ from utils import fill_excel_default, get_column_name, fill_excel_select
 from shared import created_temp_files
 
 app = Flask(__name__)
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2) # render and cloudflare
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=3) # render and cloudflare
 app.secret_key = os.urandom(24) # for session management
 app.logger.setLevel(logging.INFO)
 
