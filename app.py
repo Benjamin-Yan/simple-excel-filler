@@ -1,6 +1,6 @@
 import os, logging
 from ipaddress import ip_address, ip_network
-# from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 import atexit
 import shutil
 from flask import Flask, render_template, render_template_string, request, session, abort, send_from_directory
@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24) # for session management
 app.logger.setLevel(logging.INFO)
 
-# app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2) # render and cloudflare
 allowed_ips = os.getenv("ALLOWED_IPS", "127.0.0.1").split(",")
 
 def check_ip():
@@ -28,17 +28,8 @@ def check_ip():
 
 @app.route('/')
 def index():
-    # app.logger.info('Visitor IP: %s', request.remote_addr)
-    # return render_template('index.html')
-    xff = request.headers.get("X-Forwarded-For", None)
-    real_ip = request.headers.get("X-Real-IP", None)
-    remote_addr = request.remote_addr
-
-    return {
-        "X-Forwarded-For": xff,
-        "X-Real-IP": real_ip,
-        "request.remote_addr": remote_addr
-    }
+    app.logger.info('Visitor IP: %s', request.remote_addr)
+    return render_template('index.html')
 
 @app.route('/select')
 def about():
