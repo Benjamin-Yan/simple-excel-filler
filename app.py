@@ -125,7 +125,7 @@ def process_location():
     else:
         return f"Error: {result['message']}<br><a href='/select'>Try again</a>"
 
-@app.route("/download/<filename>")
+@app.route('/download/<filename>')
 def download_excel(filename):
     # 檢查 session，避免非授權者透過 URL 直連
     if 'fileO_name' not in session or filename not in session['fileO_name']:
@@ -165,6 +165,10 @@ def end_session():
     except Exception as e:
         app.logger.error('Error during cleanup: %s', e)
         return
+
+@app.route('/healthz')
+def health():
+    return "ok", 200
 
 if __name__ == '__main__':
     app.run(debug=False)
