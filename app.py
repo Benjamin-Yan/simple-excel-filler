@@ -133,7 +133,6 @@ def download_excel(filename):
     return send_from_directory(DATA_DIR, filename, as_attachment=True)
 
 def cleanup():
-    session.pop('fileO_name', None)
     # clean temp files
     for file_path in created_temp_files:
         try:
