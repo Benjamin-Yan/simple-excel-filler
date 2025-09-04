@@ -100,7 +100,6 @@ def fill_excel_select(selected_cols, selected_rows, location_data):
         return 'No file to process', 404
 
     fileO_name = session['fileO_name']
-    session.pop('fileO_name', None)
 
     DATA_DIR = os.path.join(os.getcwd(), "data")
     os.makedirs(DATA_DIR, exist_ok=True)

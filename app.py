@@ -15,6 +15,8 @@ allowed_ips = os.getenv("ALLOWED_IPS", "127.0.0.1").split(",")
 log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
 app.logger.setLevel( getattr(logging, log_level, logging.WARNING) )
 
+DATA_DIR = os.path.join(os.getcwd(), 'data')
+
 def check_ip():
     app.logger.debug("X-Forwarded-For: %s (2)", request.headers.get("X-Forwarded-For"))
 
@@ -124,10 +126,13 @@ def process_location():
 
 @app.route("/download/<filename>")
 def download_excel(filename):
-    DATA_DIR = os.path.join(os.getcwd(), "data")
+    # 檢查 session，避免非授權者透過 URL 直連
+    if 'fileO_name' not in session or filename not in session['fileO_name']:
+        return abort(403, description="You do not have permission to access this file.")
     return send_from_directory(DATA_DIR, filename, as_attachment=True)
 
 def cleanup():
+    session.pop('fileO_name', None)
     # clean temp files
     for file_path in created_temp_files:
         try:
@@ -138,7 +143,6 @@ def cleanup():
             app.logger.error('Error deleting temp file %s: %s', file_path, e)
     
     # clean input & output files
-    DATA_DIR = os.path.join(os.getcwd(), 'data')
     try:
         if os.path.exists(DATA_DIR):
             shutil.rmtree(DATA_DIR, ignore_errors=True)
