@@ -1,4 +1,5 @@
-import os, logging, signal
+import os, logging
+import atexit
 from ipaddress import ip_address, ip_network
 from werkzeug.middleware.proxy_fix import ProxyFix
 import shutil
@@ -151,11 +152,10 @@ def cleanup():
     except Exception as e:
         app.logger.error('Error cleaning data directory: %s', e)
 
-def handle_sigterm(signum, frame):
+@atexit.register
+def cleanup_on_exit():
     cleanup()
-    app.logger.info('Cleaned up all temp and data files due to SIGTERM.')
-
-signal.signal(signal.SIGTERM, handle_sigterm)
+    app.logger.info("Cleaned up all temp and data files on exit.")
 
 @app.route('/endapp')
 def end_session():
