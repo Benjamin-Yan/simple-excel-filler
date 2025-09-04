@@ -142,7 +142,8 @@ def cleanup():
                 app.logger.info('Deleted temp file: %s', file_path)
         except Exception as e:
             app.logger.error('Error deleting temp file %s: %s', file_path, e)
-    
+    created_temp_files.clear()
+
     # clean input & output files
     try:
         if os.path.exists(DATA_DIR):
