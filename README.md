@@ -14,6 +14,7 @@
     - [執行工具](#執行工具)
     - [功能介紹](#功能介紹)
     - [操作流程](#操作流程)
+    - [範例 Excel 檔案說明](#範例-excel-檔案說明)
   - [資料隱私與安全政策](#資料隱私與安全政策)
   - [其他資訊](#其他資訊)
     - [注意事項](#注意事項)
@@ -37,7 +38,7 @@
 ### 安裝說明（Windows，僅需一次）
 
 1. 下載原始碼
-   到 https://github.com/Benjamin-Yan/simple-excel-filler/releases/tag/V1.0.1 下載 `simple-excel-filler.zip` 並解壓縮到任意資料夾中。
+   到 https://github.com/Benjamin-Yan/simple-excel-filler/releases/tag/v1.1.0 下載 `simple-excel-filler.zip` 並解壓縮到任意資料夾中。
 2. 安裝 Python
    如果電腦沒有下載 python，請至以下網址下載並安裝 Python：https://www.python.org/downloads/
    安裝時請務必勾選 **「Add Python to PATH」** 的選項，這樣系統才找得到 Python。
@@ -80,6 +81,19 @@
 3. 選擇對應的目標欄位，請注意格式，例如: `3F`。
 4. 確認資料沒問題後，再關閉命令提示字元（黑底視窗）結束程式。
 
+### 範例 Excel 檔案說明
+
+請至右側 Releases 區下載一個壓縮檔 `example-files.zip`，內含三個範例 Excel 檔案，可用於測試操作流程：
+
+| 檔案名稱 | 說明 |
+|---|---|
+| `2025_營隊工讀申請 (範本).xlsx` | 輸入的檔案範本。 |
+| `工讀時數表 (模板).xlsx` | 輸出格式模板，可保留此模板方便以後再利用。 |
+| `工讀時數表 (範本).xlsx` | 輸出檔案的示意。 |
+
+1. 複製一份 `工讀時數表 (模板).xlsx` 作為輸出檔案，可改成任意名字。
+2. 開啟網頁，即可使用本工具，於介面中選擇 `2025_營隊工讀申請 (範本).xlsx` 作輸入檔案；以及 `工讀時數表.xlsx` 作輸出檔案。
+3. 系統將根據資料進行處理，並產生對應的輸出檔案。
 
 ## 資料隱私與安全政策
 
