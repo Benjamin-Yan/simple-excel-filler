@@ -1,7 +1,6 @@
-import os, logging
+import os, logging, signal
 from ipaddress import ip_address, ip_network
 from werkzeug.middleware.proxy_fix import ProxyFix
-import atexit
 import shutil
 from flask import Flask, render_template, render_template_string, request, session, abort, send_from_directory
 import pandas as pd
@@ -128,8 +127,8 @@ def download_excel(filename):
     DATA_DIR = os.path.join(os.getcwd(), "data")
     return send_from_directory(DATA_DIR, filename, as_attachment=True)
 
-@atexit.register
-def cleanup_temp_files():
+def cleanup():
+    # clean temp files
     for file_path in created_temp_files:
         try:
             if os.path.exists(file_path):
@@ -137,14 +136,31 @@ def cleanup_temp_files():
                 app.logger.info('Deleted temp file: %s', file_path)
         except Exception as e:
             app.logger.error('Error deleting temp file %s: %s', file_path, e)
+    
+    # clean input & output files
+    DATA_DIR = os.path.join(os.getcwd(), 'data')
+    try:
+        if os.path.exists(DATA_DIR):
+            shutil.rmtree(DATA_DIR, ignore_errors=True)
+            app.logger.info('Deleted data directory: %s', DATA_DIR)
+        os.makedirs(DATA_DIR, exist_ok=True)
+    except Exception as e:
+        app.logger.error('Error cleaning data directory: %s', e)
+
+def handle_sigterm(signum, frame):
+    cleanup()
+    app.logger.info('Cleaned up all temp and data files due to SIGTERM.')
+
+signal.signal(signal.SIGTERM, handle_sigterm)
 
 @app.route('/endapp')
 def end_session():
-    cleanup_temp_files()
-    DATA_DIR = os.path.join(os.getcwd(), "data")
-    shutil.rmtree(DATA_DIR, ignore_errors=True)
-    os.makedirs(DATA_DIR, exist_ok=True)
-    return "任務已完成，可以放心關閉此頁面。"
+    try:
+        cleanup()
+        return "任務已完成，可以放心關閉此頁面。"
+    except Exception as e:
+        app.logger.error('Error during cleanup: %s', e)
+        return
 
 if __name__ == '__main__':
     app.run(debug=False)
