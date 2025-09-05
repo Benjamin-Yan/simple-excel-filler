@@ -1,6 +1,7 @@
 import os
 import io
 import pandas as pd
+from flask import session
 from openpyxl import load_workbook
 from utils.set_selected_value import sheet_title_checker
 
@@ -24,6 +25,7 @@ def fill_excel_default(infile, outfile):
         DATA_DIR = os.path.join(os.getcwd(), "data")
         os.makedirs(DATA_DIR, exist_ok=True)
         file_path = os.path.join(DATA_DIR, outfile.filename)
+        session['fileO_name'] = outfile.filename
 
         # Use BytesIO to handle the uploaded file as a file-like object
         wb = load_workbook(io.BytesIO(outfile.read()))  # file.read() returns the file as bytes
