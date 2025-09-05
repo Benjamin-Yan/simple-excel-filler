@@ -10,7 +10,7 @@ def fill_excel_default(infile, outfile):
     將 姓名、學號、電話、身分證 欄位填入表單中，只要是有名字的都會填入
     """
     try:
-        df = pd.read_excel(infile, sheet_name=0, engine='openpyxl')
+        df = pd.read_excel(infile, sheet_name=0, engine='openpyxl', dtype=str)
         row_count = df.shape[0]
         col_count = df.shape[1]
 
@@ -33,9 +33,6 @@ def fill_excel_default(infile, outfile):
         for i in data:
             if i[0] == "nan": # 跳過沒有名字的，預期在這裡停止填寫
                 continue
-
-            if i[3] != "nan":
-                i[3] = '0' + i[3][:-2]
 
             sheet_names = wb.sheetnames
             last_sheet_name = sheet_names[-1]
